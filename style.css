@@ -1,0 +1,201 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* Hapus background-color dari body, akan ditangani oleh .heart-background */
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Penting untuk animasi hati */
+    position: relative; /* Untuk posisi relatif .heart-background */
+}
+
+/* Animasi Hati di Latar Belakang */
+.heart-background {
+    position: fixed; /* Agar hati tidak scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffc0cb; /* Pink muda sebagai dasar */
+    z-index: -2; /* Di belakang semua elemen lain */
+    overflow: hidden;
+}
+
+@keyframes floatHeart {
+    0% {
+        transform: translateY(0) scale(0);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-50vh) scale(1);
+    }
+    100% {
+        transform: translateY(-100vh) scale(1.2);
+        opacity: 0;
+    }
+}
+
+.heart-background::before,
+.heart-background::after {
+    content: '❤️'; /* Simbol hati */
+    position: absolute;
+    font-size: 30px; /* Ukuran hati */
+    color: rgba(255, 0, 0, 0.6); /* Merah semi-transparan */
+    animation: floatHeart 10s infinite ease-in-out; /* Animasi berulang */
+    pointer-events: none; /* Agar tidak mengganggu klik */
+}
+
+/* Beberapa hati dengan posisi dan durasi berbeda */
+.heart-background::before {
+    left: 10%;
+    animation-delay: 0s;
+    font-size: 40px;
+    color: rgba(255, 105, 180, 0.7); /* Hot Pink */
+}
+.heart-background::after {
+    left: 80%;
+    animation-delay: 5s; /* Mulai di waktu yang berbeda */
+    font-size: 25px;
+    color: rgba(255, 69, 0, 0.5); /* Oranye-Merah */
+}
+/* Anda bisa menambahkan lebih banyak hati dengan ':nth-child(n)' atau membuat elemen <div> terpisah jika perlu lebih banyak variasi */
+
+/* CSS untuk Kotak Hadiah dan Konten Kejutan (sama seperti sebelumnya, namun saya sertakan lagi untuk konteks) */
+.gift-box {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    transition: transform 0.3s ease-out;
+    z-index: 1; /* Pastikan kotak di atas background */
+}
+
+@keyframes shake {
+    0%, 100% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(3px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(3px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(1px, 2px) rotate(0deg); }
+}
+
+.gift-box.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+.box-base {
+    width: 100%;
+    height: 100%;
+    background-color: #ff69b4; /* Pink lembut */
+    border-radius: 10px;
+}
+
+.box-lid {
+    position: absolute;
+    top: -30px;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    background-color: #d1307b; /* Pink yang lebih gelap */
+    border-radius: 5px 5px 0 0;
+    transform-origin: bottom center;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.gift-box.open .box-lid {
+    transform: rotateX(100deg) translateY(-20px);
+}
+
+.ribbon-vertical, .ribbon-horizontal {
+    position: absolute;
+    background-color: #fce47a; /* Warna Emas */
+}
+
+.ribbon-vertical {
+    width: 20px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.ribbon-horizontal {
+    width: 100%;
+    height: 20px;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.click-text {
+    position: absolute;
+    top: 105%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    color: #555;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.gift-box.open .click-text {
+    opacity: 0;
+}
+
+.surprise-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 1s ease-in;
+    padding: 20px 30px; /* Padding lebih sedikit */
+    background: rgba(255, 255, 255, 0.9); /* Latar putih semi-transparan */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 80%; /* Batasi lebar agar responsif */
+    box-sizing: border-box; /* Pastikan padding tidak membuat elemen melebihi max-width */
+}
+
+.gift-box.open + .surprise-content {
+    opacity: 1;
+    z-index: 10;
+}
+
+@keyframes slideUpFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.incoming-animation {
+    opacity: 0;
+    animation: slideUpFadeIn 0.8s ease-out forwards;
+}
+
+.delay-1 { animation-delay: 0.5s; }
+.delay-2 { animation-delay: 1.0s; }
+.delay-3 { animation-delay: 1.5s; }
+
+.surprise-content h1 {
+    color: #d1307b;
+    margin-bottom: 15px; /* Spasi bawah untuk judul */
+}
+.surprise-content p {
+    color: #333;
+    line-height: 1.6; /* Spasi baris agar mudah dibaca */
+    margin-bottom: 10px;
+}
